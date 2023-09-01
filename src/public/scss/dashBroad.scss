@@ -1,0 +1,188 @@
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  border: 1px solid #ccc;
+  border-top: none;
+  height: 462px;
+}
+
+.date-time{
+    display: flex;
+    height: 30px;
+    margin-top: 10px;
+    align-items: center;
+    .box-checkbox{
+        display: inline-flex;
+        gap: 10px;
+        margin-left: 10px;
+    }
+    .date-time{
+        display: inline-flex;
+        justify-content: center;
+        gap: 10px;
+        margin-left: auto;
+        margin-right: 30px;
+        input{
+            height: 30px;
+            font-size: 16px;
+        }
+    }
+    button{
+      padding: 0 10px;
+      height: 31px;
+      border-radius: 8px;
+    }
+}
+.chart{
+  margin: 15px 10px;
+  height: 87%;
+}
+
+.dashBroadChart{
+  display: flex;
+  gap: 20px;
+  width: 1024px;
+  height: 487px;
+  overflow: hidden;
+  // flex-wrap: wrap;
+  top: -50px;
+  height: 100%;
+  .pie-containtChart, .list-eventChart{
+    flex-basis: calc(50% - 20px);
+    max-width: calc(50% - 20px);
+    // background-color: antiquewhite;
+    #pieChart, .pieMonth{
+      width: 100%;
+      height: 100%;
+      // background-color: blue;
+    }
+  }
+  .pie-containtChart{
+    position: relative;
+    // background-color: aquamarine;
+    .des-pieChart{
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      font-size: 18px;
+      z-index: 1;
+      background-color: white;
+    }
+    .des-totalTrip{
+      position: absolute;
+      bottom: 15px;
+      width: 100%;
+      text-align: center;
+      font-size: 18px;
+    }
+  }
+}
+
+.list-eventChart{
+  display: flex;
+  row-gap: 10px;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 15px;
+  overflow: hidden;
+  // background-color: blueviolet;
+  .title-itemChart{
+      display: flex;
+      justify-content: space-around;
+      .dashBroad-path-titleChart{
+          position: relative;
+          left: -6px;
+      }
+      .dashBroad-time-titleChart{
+          position: relative;
+          left: -30px;
+      }
+      .dashBroad-status-titleChart{
+          position: relative;
+          right: 35px;
+      }
+  }
+}
+.dashBroad-title{
+  text-align: center;
+  z-index: 1;
+  position: relative;
+}
+.list-itemChart{
+  height: 500px;
+  overflow-y: auto;
+  counter-reset: number;
+  span{
+      width: 90px
+  }
+  .item{
+      position: relative;
+      height: 50px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 5px;
+      counter-increment: number;
+      background-color: white;
+      border-radius: 10px;
+      border: 1px solid;
+      padding: 0 30px;
+      &::before{
+          position: absolute;
+          content: counter(number);
+          left: 5px;
+          width: 20px;
+          height: 20px;
+          background-color: wheat;
+          border-radius: 50%;
+          text-align: center;
+          box-shadow: 0 0 0px 1px #c3bbbb;
+      }
+  }
+}
+.chartMonth{
+  display: none;
+  flex-basis: calc(50% - 20px);
+  max-width: calc(50% - 20px);
+  #pieMonth{
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+.timeShow{
+  position: relative;
+  top: 14px;
+  right: -645px;
+}

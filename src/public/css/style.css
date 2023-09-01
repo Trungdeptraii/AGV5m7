@@ -1,0 +1,303 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800;900&family=Roboto:wght@500&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: initial;
+}
+
+ul, ol {
+  padding: 0;
+  margin: 0;
+}
+
+input {
+  outline: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+body {
+  font-family: "Roboto";
+  font-weight: 400;
+}
+
+.container-body {
+  width: 1024px;
+  height: 600px;
+  margin: 0 auto;
+}
+
+.header {
+  padding: 10px;
+  display: flex;
+  z-index: 1;
+  position: relative;
+  background-color: white;
+}
+.header .header-content {
+  margin: auto auto;
+}
+.header .header-content .content-title {
+  margin-bottom: 5px;
+  font-size: 25px;
+  font-weight: 800;
+}
+.header .header-content .content-body {
+  margin-top: 5px;
+  font-size: 18px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.sideBar .name-agv {
+  font-size: 35px;
+  font: 800px;
+  text-align: center;
+  padding: 8px 0px;
+}
+.sideBar .status-agv {
+  display: flex;
+  flex-wrap: wrap;
+}
+.sideBar .status-agv .status-item {
+  flex-basis: 50%;
+  max-width: 50%;
+  height: 110px;
+}
+.sideBar .status-agv .status-item .status-item-body {
+  background-color: white;
+  border-radius: 15px;
+  width: 90%;
+  height: 90%;
+  margin: 5px auto;
+  box-shadow: 0px 0px 10px 2px #a8b4a8;
+}
+.sideBar .status-agv .status-item .title {
+  font-weight: 600;
+  font-size: 21px;
+  text-align: center;
+  height: 35px;
+  line-height: 35px;
+}
+.sideBar .status-agv .status-item .content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 35px);
+  width: 100%;
+  font-weight: 800;
+  font-size: 30px;
+}
+
+.img-map {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.grid {
+  position: relative;
+  height: 400px;
+  width: 100%;
+  margin: auto auto;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -5;
+}
+.grid [class=item] {
+  flex-basis: 12.5%;
+  max-width: 12.5%;
+  flex-grow: 1;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  border: 1px solid gray;
+}
+.grid .point-01, .grid .point-11, .grid .point-21, .grid .point-31, .grid .point-41, .grid .point-51, .grid .point-61, .grid .point-71, .grid .point-81 {
+  right: -1.5%;
+}
+.grid .point-02, .grid .point-12, .grid .point-22, .grid .point-32, .grid .point-42, .grid .point-52, .grid .point-62, .grid .point-72, .grid .point-82 {
+  right: 11%;
+}
+.grid .point-03, .grid .point-13, .grid .point-23, .grid .point-33, .grid .point-43, .grid .point-53, .grid .point-63, .grid .point-73, .grid .point-83 {
+  right: 23.5%;
+}
+.grid .point-04, .grid .point-14, .grid .point-24, .grid .point-34, .grid .point-44, .grid .point-54, .grid .point-64, .grid .point-74, .grid .point-84 {
+  right: 36%;
+}
+.grid .point-05, .grid .point-15, .grid .point-25, .grid .point-35, .grid .point-45, .grid .point-55, .grid .point-65, .grid .point-75, .grid .point-85 {
+  right: 48.5%;
+}
+.grid .point-06, .grid .point-16, .grid .point-26, .grid .point-36, .grid .point-46, .grid .point-56, .grid .point-66, .grid .point-76, .grid .point-86 {
+  right: 61%;
+}
+.grid .point-07, .grid .point-17, .grid .point-27, .grid .point-37, .grid .point-47, .grid .point-57, .grid .point-67, .grid .point-77, .grid .point-87 {
+  right: 73.5%;
+}
+.grid .point-08, .grid .point-18, .grid .point-28, .grid .point-38, .grid .point-48, .grid .point-58, .grid .point-68, .grid .point-78, .grid .point-88 {
+  right: 86%;
+}
+.grid .point-09, .grid .point-19, .grid .point-29, .grid .point-39, .grid .point-49, .grid .point-59, .grid .point-69, .grid .point-79, .grid .point-89 {
+  right: 98.5%;
+}
+.grid .point-01, .grid .point-02, .grid .point-03, .grid .point-04, .grid .point-05, .grid .point-06, .grid .point-07, .grid .point-08, .grid .point-09 {
+  top: 22px;
+}
+.grid .point-11, .grid .point-12, .grid .point-13, .grid .point-14, .grid .point-15, .grid .point-16, .grid .point-17, .grid .point-18, .grid .point-19 {
+  top: 72px;
+}
+.grid .point-21, .grid .point-22, .grid .point-23, .grid .point-24, .grid .point-25, .grid .point-26, .grid .point-27, .grid .point-28, .grid .point-29 {
+  top: 122px;
+}
+.grid .point-31, .grid .point-32, .grid .point-33, .grid .point-34, .grid .point-35, .grid .point-36, .grid .point-37, .grid .point-38, .grid .point-39 {
+  top: 172px;
+}
+.grid .point-41, .grid .point-42, .grid .point-43, .grid .point-44, .grid .point-45, .grid .point-46, .grid .point-47, .grid .point-48, .grid .point-49 {
+  top: 222px;
+}
+.grid .point-51, .grid .point-52, .grid .point-53, .grid .point-54, .grid .point-55, .grid .point-56, .grid .point-57, .grid .point-58, .grid .point-59 {
+  top: 272px;
+}
+.grid .point-61, .grid .point-62, .grid .point-63, .grid .point-64, .grid .point-65, .grid .point-66, .grid .point-67, .grid .point-68, .grid .point-69 {
+  top: 322px;
+}
+.grid .point-71, .grid .point-72, .grid .point-73, .grid .point-74, .grid .point-75, .grid .point-76, .grid .point-77, .grid .point-78, .grid .point-79 {
+  top: 372px;
+}
+.grid .point-81, .grid .point-82, .grid .point-83, .grid .point-84, .grid .point-85, .grid .point-86, .grid .point-87, .grid .point-88, .grid .point-89 {
+  top: 422px;
+}
+.grid .point {
+  position: absolute;
+  text-align: center;
+  width: 20px;
+  height: 35px;
+}
+.grid .dot {
+  display: inline-block;
+  text-align: center;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  background-color: gray;
+  margin: 0 auto;
+}
+.grid .agv > span:first-child {
+  color: rgb(8, 4, 248);
+  font-weight: 900;
+}
+.grid .agv > span:last-child {
+  background-color: orange;
+  scale: 1.2;
+}
+.grid .pathActive > span:first-child {
+  color: rgb(21, 107, 110);
+}
+.grid .pathActive > span:last-child {
+  background-color: rgb(21, 107, 110);
+}
+.grid .pathUnActive > span:first-child {
+  color: rgb(235, 133, 226);
+}
+.grid .pathUnActive > span:last-child {
+  background-color: rgb(235, 133, 226);
+}
+
+#pie, #line {
+  width: 500px;
+  height: 500px;
+}
+
+.dashBroad {
+  display: flex;
+  gap: 20px;
+  width: 1024px;
+  height: 487px;
+  overflow: hidden;
+  position: relative;
+  top: -50px;
+}
+
+.list-event {
+  margin-top: 100px;
+  display: flex;
+  row-gap: 10px;
+  flex-direction: column;
+  width: 100%;
+  padding-right: 20px;
+  overflow: hidden;
+}
+.list-event .title-item {
+  display: flex;
+  justify-content: space-around;
+}
+.list-event .title-item .dashBroad-path-title {
+  position: relative;
+  left: -6px;
+}
+.list-event .title-item .dashBroad-time-title {
+  position: relative;
+  left: -30px;
+}
+.list-event .title-item .dashBroad-status-title {
+  position: relative;
+  right: 35px;
+}
+
+.dashBroad-title {
+  text-align: center;
+  z-index: 1;
+  position: relative;
+  top: 15px;
+  font-size: 18px;
+}
+
+.list-item {
+  height: 500px;
+  overflow-y: auto;
+  counter-reset: number;
+}
+.list-item span {
+  width: 90px;
+}
+.list-item .item {
+  position: relative;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 5px;
+  counter-increment: number;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid;
+  padding: 0 30px;
+}
+.list-item .item::before {
+  position: absolute;
+  content: counter(number);
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: wheat;
+  border-radius: 50%;
+  text-align: center;
+  box-shadow: 0 0 0px 1px #c3bbbb;
+}
+
+/*# sourceMappingURL=style.css.map */

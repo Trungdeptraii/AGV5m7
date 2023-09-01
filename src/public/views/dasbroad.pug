@@ -1,0 +1,46 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="./../css/style.css")
+        link(rel="stylesheet", href="./../css/dashBroad.css")
+        title=tite
+    body 
+        .container-body 
+            include _header
+            div.tab
+                button(type='button').tablinks Ngày hôm nay
+                button(type='button').tablinks Thống kê
+                span.timeShow
+            .tabcontent#Day
+                .dashBroad-title 
+                .dashBroad 
+                    .pie-containt 
+                        div#pie
+                    .list-event 
+                        ul.list-item
+            .tabcontent#Month
+                .date-time 
+                    .box-checkbox
+                        button(class='chooseDay') Chọn Một Ngày
+                        button(class='chooseMonth')  Các ngày trong tháng
+                    .date-time 
+                        input(type="date" class="dateTimeDay")
+                        input(type="date" class="dateTimeMonth")
+                        button(class="btn-search") Tìm kiếm
+                .chart
+                    .dashBroadChart 
+                        .pie-containtChart
+                            .des-pieChart
+                            div#pieChart
+                        .list-eventChart 
+                            ul.list-itemChart
+                        .chartMonth 
+                            #pieMonth
+                                //button.btnpieMonth Xem chi tiết
+
+            
+                        
+                
+    script(src="./../dist/bundle.js" type='module')

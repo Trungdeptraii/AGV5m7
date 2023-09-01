@@ -1,0 +1,72 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="./../css/grid.css")
+        link(rel="stylesheet", href="./../css/style.css")
+        title Home
+    body
+        .container-body 
+            //1.header
+            include _header
+            //2.content
+            main 
+                .container
+                    .row 
+                        .col-4 
+                            section.sideBar
+                                .sideBar-container 
+                                    h2.name-agv AGV CR2000R 
+                                    ul.status-agv 
+                                        li.status-item
+                                            .status-item-body 
+                                                .title Connect
+                                                .content 
+                                                    span.connect
+                                        li.status-item
+                                            .status-item-body 
+                                                .title Status 
+                                                .content 
+                                                    span.status
+                                        li.status-item
+                                            .status-item-body 
+                                                .title Location
+                                                .content 
+                                                    span.location
+                                        li.status-item
+                                            .status-item-body 
+                                                .title Battery 
+                                                .content    
+                                                    span.battery
+                                        li.status-item
+                                            .status-item-body 
+                                                .title Time
+                                                .content    
+                                                    span.hours 
+                                                    span :
+                                                    span.minute
+                                        li.status-item
+                                            .status-item-body 
+                                                .title Speed 
+                                                .content   
+                                                    span.speed-int 
+                                                    span .
+                                                    span.speed-float
+                                                    span m/s
+                                        li.status-item
+                                            .status-item-body 
+                                                .title Total 
+                                                .content 
+                                                    span.total
+                                        li.status-item
+                                            .status-item-body 
+                                                .title Succee
+                                                .content 
+                                                    span.succee
+                        .col-8 
+                            section.map
+                                .grid
+
+    script(src="../js/home.js")
+        

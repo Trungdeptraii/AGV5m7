@@ -1,0 +1,269 @@
+@import 'parts/reset';
+@import 'parts/mixin';
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@300;400;500;600;700;800;900&display=swap');
+
+body{
+    font-family: 'Roboto';
+    font-weight: 400;
+}
+.container-body{
+    width: 1024px;
+    height: 600px;
+    margin: 0 auto;
+    // background-color: aquamarine;
+}
+//Start Header
+.header{
+    padding: 10px;
+    display: flex;
+    z-index: 1;
+    position: relative;
+    background-color: white;
+    .header-content{
+        margin: auto auto;
+        .content-title{
+            margin-bottom: 5px;
+            font-size: 25px;
+            font-weight: 800;
+        }
+        .content-body{
+            margin-top: 5px;
+            font-size: 18px;
+            text-align: center;
+            font-weight: 700;
+        }
+    }
+}
+//End Header
+//Start sideBar
+.sideBar{
+    // display: none;
+    // background-color: blueviolet;
+    .name-agv{
+        font-size: 35px;
+        font: 800px;
+        text-align: center;
+        padding: 8px 0px;
+    }
+    .status-agv{
+        display: flex;
+        flex-wrap: wrap;
+        .status-item{
+            flex-basis: 50%;
+            max-width: 50%;
+            height: 110px;
+            // background-color: cornsilk;
+            .status-item-body{
+                background-color: white;
+                border-radius: 15px;
+                width: 90%;
+                height: 90%;
+                margin: 5px auto;
+                box-shadow: 0px 0px 10px 2px #a8b4a8;
+            }
+            .title{
+                font-weight: 600;
+                font-size: 21px;
+                text-align: center;
+                height: 35px;
+                line-height: 35px;
+            }
+            .content{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: calc(100% - 35px);
+                width: 100%;
+                font-weight: 800;
+                font-size: 30px;
+            }
+        }
+    }
+}
+//End sideBar
+//Start Map
+    .img-map{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+//End Map
+.grid{
+    position: relative;
+    height: 400px;
+    width: 100%;
+    margin: auto auto;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    @include createGrid(3, 5);
+
+    .point-01, .point-11, .point-21, .point-31, .point-41, .point-51, .point-61, .point-71, .point-81{
+        right: -1.5%;
+    }
+    .point-02, .point-12, .point-22, .point-32, .point-42, .point-52, .point-62, .point-72, .point-82{
+        right: 11%;
+    }
+    .point-03, .point-13, .point-23, .point-33, .point-43, .point-53, .point-63, .point-73, .point-83{
+        right: 23.5%;
+    }
+    .point-04, .point-14, .point-24, .point-34, .point-44, .point-54, .point-64, .point-74, .point-84{
+        right: 36%;
+    }
+    .point-05, .point-15, .point-25, .point-35, .point-45, .point-55, .point-65, .point-75, .point-85{
+        right: 48.5%;
+    }
+    .point-06, .point-16, .point-26, .point-36, .point-46, .point-56, .point-66, .point-76, .point-86{
+        right: 61%;
+    }
+    .point-07, .point-17, .point-27, .point-37, .point-47, .point-57, .point-67, .point-77, .point-87{
+        right: 73.5% ;
+    }
+    .point-08, .point-18, .point-28, .point-38, .point-48, .point-58, .point-68, .point-78, .point-88{
+        right: 86%;
+    }
+    .point-09, .point-19, .point-29, .point-39, .point-49, .point-59, .point-69, .point-79, .point-89{
+        right: 98.5% ;
+    }
+    .point-01,.point-02, .point-03, .point-04, .point-05, .point-06, .point-07, .point-08, .point-09{
+        top: 22px;
+    }
+    .point-11,.point-12, .point-13, .point-14, .point-15, .point-16, .point-17, .point-18, .point-19{
+        top: 72px;
+    }
+    .point-21,.point-22, .point-23, .point-24, .point-25, .point-26, .point-27, .point-28, .point-29{
+        top: 122px;
+    }
+    .point-31,.point-32, .point-33, .point-34, .point-35, .point-36, .point-37, .point-38, .point-39{
+        top: 172px;
+    }
+    .point-41,.point-42, .point-43, .point-44, .point-45, .point-46, .point-47, .point-48, .point-49{
+        top: 222px;
+    }
+    .point-51,.point-52, .point-53, .point-54, .point-55, .point-56, .point-57, .point-58, .point-59{
+        top: 272px;
+    }
+    .point-61,.point-62, .point-63, .point-64, .point-65, .point-66, .point-67, .point-68, .point-69{
+        top: 322px;
+    }
+    .point-71,.point-72, .point-73, .point-74, .point-75, .point-76, .point-77, .point-78, .point-79{
+        top: 372px;
+    }
+    .point-81,.point-82, .point-83, .point-84, .point-85, .point-86, .point-87, .point-88, .point-89{
+        top: 422px;
+    }
+    .point{
+        position: absolute;
+        text-align: center;
+        width: 20px;
+        height: 35px;
+    }
+    .dot{
+        display: inline-block;
+        text-align: center;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        background-color: gray;
+        margin: 0 auto; 
+    }
+    .agv > span:first-child{
+        color: rgb(8, 4, 248);
+        font-weight: 900;
+    }
+    .agv > span:last-child{
+        background-color: orange;
+        scale: 1.2;
+    }
+    .pathActive > span:first-child{
+        color: rgb(21, 107, 110);
+    }
+    .pathActive > span:last-child{
+        background-color: rgb(21, 107, 110);
+    }
+    .pathUnActive > span:first-child{
+        color: rgb(235, 133, 226);
+    }
+    .pathUnActive > span:last-child{
+        background-color: rgb(235, 133, 226);
+    }
+        
+}
+#pie, #line{
+    width: 500px;
+    height: 500px;
+}
+.dashBroad{
+    display: flex;
+    gap: 20px;
+    width: 1024px;
+    height: 487px;
+    overflow: hidden;
+    position: relative;
+    top: -50px;
+}
+
+.list-event{
+    margin-top: 100px;
+    display: flex;
+    row-gap: 10px;
+    flex-direction: column;
+    width: 100%;
+    padding-right: 20px;
+    overflow: hidden;
+    .title-item{
+        display: flex;
+        justify-content: space-around;
+        .dashBroad-path-title{
+            position: relative;
+            left: -6px;
+        }
+        .dashBroad-time-title{
+            position: relative;
+            left: -30px;
+        }
+        .dashBroad-status-title{
+            position: relative;
+            right: 35px;
+        }
+    }
+}
+.dashBroad-title{
+    text-align: center;
+    z-index: 1;
+    position: relative;
+    top: 15px;
+    font-size: 18px
+}
+.list-item{
+    height: 500px;
+    overflow-y: auto;
+    counter-reset: number;
+    span{
+        width: 90px
+    }
+    .item{
+        position: relative;
+        height: 50px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 5px;
+        counter-increment: number;
+        background-color: white;
+        border-radius: 10px;
+        border: 1px solid;
+        padding: 0 30px;
+        &::before{
+            position: absolute;
+            content: counter(number);
+            left: 5px;
+            width: 20px;
+            height: 20px;
+            background-color: wheat;
+            border-radius: 50%;
+            text-align: center;
+            box-shadow: 0 0 0px 1px #c3bbbb;
+        }
+    }
+}

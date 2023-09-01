@@ -1,0 +1,17 @@
+@mixin createGrid($column, $space){
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: calc($space * -1);
+     [class='item']{
+        flex-basis: calc(100% / (24 / $column));
+        max-width: calc(100% / (24 / $column));
+        flex-grow: 1;
+        height: 50px;
+        line-height: 50px;
+        // background-color: brown;
+        text-align: center;
+        border: 1px solid gray;
+
+    }
+}
+
