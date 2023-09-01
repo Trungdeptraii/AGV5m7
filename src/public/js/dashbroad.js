@@ -6,12 +6,13 @@ const listEventChart = document.querySelector('.list-eventChart');
 const chartMonth = document.querySelector('.chartMonth ');
 const pieContaintChart = document.querySelector('.pie-containtChart');
 const timeShow = document.querySelector('.timeShow');
+const chart = document.querySelector('.chart')
 
 const dashBroad = document.querySelector('.dashBroad')
 import {format} from 'date-fns'
 
 const title = document.querySelector('.dashBroad-title');
-title.textContent = `Dữ liệu ngày ${format(new Date(), 'dd-MM-yyyy')}`
+
 import Plotly from 'plotly.js-dist-min'
 setInterval(()=>{
   Fetch('GET','getDashBroad')
@@ -36,6 +37,7 @@ async function Fetch(method, path, raw = null) {
     const {data} = await result.json();
     console.log('data', data)
     if(data.length != 0){
+      title.textContent = `Dữ liệu ngày: ${format(new Date(), 'dd-MM-yyyy')}`;
       numTotal = data[0].arrLogTotal.length;
       numSuccee = data[0].arrLogSuccee.length;
       pending = data[0].arrLogPending.length;
@@ -219,8 +221,8 @@ btnSearch.onclick = async()=>{
     let monthDays = new Date(input_dateTimeMonth.value).getMonth();
     let checkMonth = monthDay == monthDays;
     let desTitle = document.querySelector('.des-pieChart');
-    let desTotalTrip = document.querySelector('.des-totalTrip')
     if(!isCheck && day){
+      desTitle.style.display = '';
       listEventChart.style.display = '';
       chartMonth.style.display = 'none';
       pieContaintChart.style.margin = 'initial';
@@ -292,7 +294,7 @@ btnSearch.onclick = async()=>{
               tongSuccee = tongSuccee + el.arrLogSuccee.length;
               tongFail = tongFail + el.arrLogFail.length;
             })
-            desTitle.textContent = ` Dữ liệu từ ngày: ${format(new Date(day), 'dd-MM-yyy')} đến ${format(new Date(days), 'dd-MM-yyy')} - thực hiện: ${tongFail + tongSuccee} chuyến `;
+            desTitle.style.display = 'none';
             let dataPlot = [{
               type: "pie",
               values: [tongSuccee, tongFail] ,
@@ -306,13 +308,13 @@ btnSearch.onclick = async()=>{
             let monthSuccee = {
               x: [],
               y: [],
-              name: ` Thành công `,
+              name: '',
               type: 'bar'
             }; 
             var monthFail = {
               x: [],
               y: [],
-              name: ` Thất bại`,
+              name: '',
               type: 'bar'
             };
               resultAPI.forEach((el)=>{
@@ -323,6 +325,10 @@ btnSearch.onclick = async()=>{
                   monthFail.y[monthFail.y.length] = el.arrLogFail.length;
                 }
               })
+              let numMonthSuccee = monthSuccee.y.reduce((first,el)=>{return first + el})
+              monthSuccee.name = ` Thành công: ${numMonthSuccee ? numMonthSuccee : 0} chuyến `;
+              let numMonthFail = monthFail.y.reduce((first,el)=>{return first + el})
+              monthFail.name = ` Thất bại: ${numMonthFail ? numMonthFail : 0} chuyến `
               var data = [monthSuccee, monthFail];
               var layout = {barmode: 'group'};
               Plotly.newPlot('pieMonth', data, layout);
@@ -351,6 +357,8 @@ btnSearch.onclick = async()=>{
     }
   }
 }
+
+//Hanlde tabs
 const tab = tag('.tab');
 Array.from(tab.children).forEach((el, index)=>{
     if(index == 0){
@@ -375,6 +383,8 @@ function openCity(evt, cityName) {
     }
     document.getElementById(cityName).style.display = "block";
 }
+
+//API
 async function Fetch2(method, path, raw = null) {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -396,13 +406,30 @@ async function Fetch2(method, path, raw = null) {
         console.log('Error getDay', error)
     }
 }
+
+//Settime show
 setInterval(()=>{
   timeShow.textContent = format(new Date(), 'dd-MM-yyyy HH:mm:ss')
 }, 1000)
+
+// Nút bấm và hiển thị tab khi load xong
 window.addEventListener('load', ()=>{
   let tabcontent = document.getElementsByClassName("tabcontent");
   let tablinks = document.getElementsByClassName("tablinks");
-  tablinks[0].backgroundColor = 'gray';
-  tablinks[0].color = 'white';
+  tablinks[0].style.backgroundColor = 'gray';
+  tablinks[0].style.color = 'white';
   tabcontent[0].style.display = 'block';
+  Array.from(tablinks).forEach((el, index)=>{
+    el.addEventListener('click', function(){
+      this.style.backgroundColor = 'gray';
+      this.style.color = 'white';
+      if(index==0){
+        tablinks[tabcontent.length-1].style.backgroundColor = 'initial';
+        tablinks[tabcontent.length-1].style.color = 'initial';
+      }else{
+        tablinks[0].style.backgroundColor = 'initial';
+        tablinks[0].style.color = 'initial';
+      }
+    })
+  })
 })

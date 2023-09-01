@@ -6,7 +6,7 @@ body{
     font-family: 'Roboto';
     font-weight: 400;
 }
-.container-body{
+.container-body1, .container-body2{
     width: 1024px;
     height: 600px;
     margin: 0 auto;
@@ -248,7 +248,7 @@ body{
         display: flex;
         justify-content: space-around;
         align-items: center;
-        margin-bottom: 5px;
+        margin-bottom: 6px;
         counter-increment: number;
         background-color: white;
         border-radius: 10px;

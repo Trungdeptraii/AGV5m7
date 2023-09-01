@@ -17,6 +17,7 @@
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.3s;
+  font-weight: 600;
 }
 
 /* Change background color of buttons on hover */
@@ -39,9 +40,11 @@
 
 .date-time{
     display: flex;
-    height: 30px;
+    background-color: white;
     margin-top: 10px;
     align-items: center;
+    position: relative;
+    z-index: 2;
     .box-checkbox{
         display: inline-flex;
         gap: 10px;
@@ -67,6 +70,8 @@
 .chart{
   margin: 15px 10px;
   height: 87%;
+  position: relative;
+  top: -55px
 }
 
 .dashBroadChart{
@@ -90,6 +95,7 @@
   }
   .pie-containtChart{
     position: relative;
+    padding-top: 30px;
     // background-color: aquamarine;
     .des-pieChart{
       position: absolute;
@@ -117,6 +123,7 @@
   width: 100%;
   padding: 0 15px;
   overflow: hidden;
+  padding-top: 42px;
   // background-color: blueviolet;
   .title-itemChart{
       display: flex;
@@ -153,7 +160,7 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: 13px;
       counter-increment: number;
       background-color: white;
       border-radius: 10px;

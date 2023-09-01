@@ -32,7 +32,7 @@ function setValueHtml(data = [], ele = [], connects) {
     connect.style.color = 'green'
     ele.forEach((el, index) => {
       if(el === statusz){
-        el.textContent = data[`${index}`] == 1 ? 'STOP' : data[`${index}`] == 2 ? 'RUN' : data[`${index}`] == 3 ? "WAIT" : "ERROR"
+        el.textContent = data[`${index}`] == 1 ? 'Dừng' : data[`${index}`] == 2 ? 'Chạy' : data[`${index}`] == 3 ? "Chờ" : "Lỗi"
       }else{
         el.textContent = data[`${index}`];
       }
