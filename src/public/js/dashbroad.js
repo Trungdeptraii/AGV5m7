@@ -6,7 +6,10 @@ const listEventChart = document.querySelector('.list-eventChart');
 const chartMonth = document.querySelector('.chartMonth ');
 const pieContaintChart = document.querySelector('.pie-containtChart');
 const timeShow = document.querySelector('.timeShow');
-const chart = document.querySelector('.chart')
+const chart = document.querySelector('.chart');
+const btnPieMonth = document.querySelector('.btn-pieMonth');
+const desDaysTitle = document.querySelector('.des-daysTitle');
+let monthSuccee, monthFail
 
 const dashBroad = document.querySelector('.dashBroad')
 import {format} from 'date-fns'
@@ -229,7 +232,8 @@ btnSearch.onclick = async()=>{
       resultAPI = await Fetch2('POST','getDay', {dateDay: `${day}`, dateDays:``});
       console.log('resultAPI', resultAPI)
       if(resultAPI && resultAPI.arrLogTotal.length != 0){
-        console.log('Day true')
+        console.log('Day true');
+        desDaysTitle.style.display = 'none';
         const listChild = document.querySelector('.list-itemChart');
         const arrListChild = Array.from(listChild.children)
         arrListChild.forEach((el)=>{
@@ -251,7 +255,7 @@ btnSearch.onclick = async()=>{
           let numSuccee = resultAPI.arrLogSuccee.length;
           let numFail = resultAPI.arrLogFail.length;
           let numTotal = resultAPI.arrLogTotal.length;
-          desTitle.textContent = ` Dữ liệu ngày: ${format(new Date(day), 'dd-MM-yyy')} - thực hiện: ${numSuccee + numFail} chuyến`;
+          desTitle.textContent = ` Dữ liệu ngày: ${format(new Date(day), 'dd-MM-yyy')}: thực hiện ${numSuccee + numFail} chuyến`;
           let dataPlot = [{
             type: "pie",
             values: [numSuccee, numFail] ,
@@ -272,7 +276,7 @@ btnSearch.onclick = async()=>{
             textposition: "inside"
           }];
           Plotly.newPlot("pieChart", dataPlot);
-          desTitle.textContent = ` Dữ liệu ngày: ${format(new Date(day), 'dd-MM-yyy')} - thực hiện: ${0} chuyến`;
+          desTitle.textContent = ` Dữ liệu ngày: ${format(new Date(day), 'dd-MM-yyy')}: thực hiện ${0} chuyến`;
         }
     }else{
         if(!isCheck && !day){
@@ -294,6 +298,8 @@ btnSearch.onclick = async()=>{
               tongSuccee = tongSuccee + el.arrLogSuccee.length;
               tongFail = tongFail + el.arrLogFail.length;
             })
+            desDaysTitle.textContent = ` Dữ liệu từ ngày ${format(new Date(day), 'dd - MM')} tới ngày ${format(new Date(days), 'dd - MM')}: thực hiện ${tongFail+tongSuccee} chuyến `;
+            desDaysTitle.style.display = '';
             desTitle.style.display = 'none';
             let dataPlot = [{
               type: "pie",
@@ -305,13 +311,13 @@ btnSearch.onclick = async()=>{
             Plotly.newPlot("pieChart", dataPlot);
 
             // Chart 2
-            let monthSuccee = {
+            monthSuccee = {
               x: [],
               y: [],
               name: '',
               type: 'bar'
             }; 
-            var monthFail = {
+            monthFail = {
               x: [],
               y: [],
               name: '',
@@ -325,17 +331,33 @@ btnSearch.onclick = async()=>{
                   monthFail.y[monthFail.y.length] = el.arrLogFail.length;
                 }
               })
-              let numMonthSuccee = monthSuccee.y.reduce((first,el)=>{return first + el})
-              monthSuccee.name = ` Thành công: ${numMonthSuccee ? numMonthSuccee : 0} chuyến `;
-              let numMonthFail = monthFail.y.reduce((first,el)=>{return first + el})
-              monthFail.name = ` Thất bại: ${numMonthFail ? numMonthFail : 0} chuyến `
-              var data = [monthSuccee, monthFail];
-              var layout = {barmode: 'group'};
-              Plotly.newPlot('pieMonth', data, layout);
+              try {
+                let numMonthSuccee = monthSuccee.y.reduce((first,el)=>{return first + el})
+                monthSuccee.name = ` Thành công: ${numMonthSuccee ? numMonthSuccee : 0} chuyến `;
+                let numMonthFail = monthFail.y.reduce((first,el)=>{return first + el})
+                monthFail.name = ` Thất bại: ${numMonthFail ? numMonthFail : 0} chuyến `
+                var data = [monthSuccee, monthFail];
+                var layout = {barmode: 'group'};
+                Plotly.newPlot('pieMonth', data, layout);
+              } catch (error) {
+                listEventChart.style.display = 'none';
+                pieContaintChart.style.margin = '0 auto';
+                chartMonth.style.display = 'none';
+                let dataPlot = [{
+                  type: "pie",
+                  values: [1],
+                  labels: [`Không có dữ liệu !!!`],
+                  texttemplate: "%{percent}",
+                  textposition: "inside"
+                }];
+                Plotly.newPlot("pieChart", dataPlot);
+                desDaysTitle.textContent = ` Dữ liệu từ ngày: ${format(new Date(day), 'dd - MM')} tới ngày ${format(new Date(days), 'dd - MM')}: thực hiện ${0} chuyến `;
+              }
             }else{
               console.log('Days fail');
               listEventChart.style.display = 'none';
               pieContaintChart.style.margin = '0 auto';
+              chartMonth.style.display = 'none';
               let dataPlot = [{
                 type: "pie",
                 values: [1],
@@ -344,8 +366,8 @@ btnSearch.onclick = async()=>{
                 textposition: "inside"
               }];
               Plotly.newPlot("pieChart", dataPlot);
-              desTitle.textContent = ` Dữ liệu từ ngày: ${format(new Date(day), 'dd-MM-yyy')} đến ${format(new Date(days), 'dd-MM-yyy')} - thực hiện: ${0} chuyến `;
-          }
+              desDaysTitle.textContent = ` Dữ liệu từ ngày: ${format(new Date(day), 'dd - MM')} tới ngày ${format(new Date(days), 'dd - MM')}: thực hiện ${0} chuyến `;
+            }
         }else{
           alert('Ngày nhập phải theo thứ tự tăng dần !!!')
         }
@@ -355,6 +377,39 @@ btnSearch.onclick = async()=>{
     if(isCheck && (!day || !days)){
       alert('Nhập đầy đủ ngày cần tìm kiếm !!!')
     }
+  }
+}
+// btn xem chi tiết
+btnPieMonth.onclick = ()=>{
+  console.log('btnPieMonth', `.${btnPieMonth.textContent}.`)
+  if(btnPieMonth.textContent == 'Xem Chi Tiết'){
+    console.log('true');
+    pieContaintChart.style.display = 'none';
+    chartMonth.style.width = '100%';
+    chartMonth.style.flexBasis = 'initial'; //calc(50% - 20px
+    chartMonth.style.maxWidth = 'initial'; //calc(50% - 20px
+    let numMonthSuccee = monthSuccee.y.reduce((first,el)=>{return first + el})
+    monthSuccee.name = ` Thành công: ${numMonthSuccee ? numMonthSuccee : 0} chuyến `;
+    let numMonthFail = monthFail.y.reduce((first,el)=>{return first + el})
+    monthFail.name = ` Thất bại: ${numMonthFail ? numMonthFail : 0} chuyến `
+    var data = [monthSuccee, monthFail];
+    var layout = {barmode: 'group'};
+    Plotly.newPlot('pieMonth', data, layout);  
+    btnPieMonth.textContent = 'Quay Lại';
+  }else if(btnPieMonth.textContent == 'Quay Lại'){
+    console.log('false');
+    pieContaintChart.style.display = '';
+    chartMonth.style.width = '';
+    chartMonth.style.flexBasis = 'calc(50% - 20px)';
+    chartMonth.style.maxWidth =  'calc(50% - 20px)';
+    let numMonthSuccee = monthSuccee.y.reduce((first,el)=>{return first + el})
+    monthSuccee.name = ` Thành công: ${numMonthSuccee ? numMonthSuccee : 0} chuyến `;
+    let numMonthFail = monthFail.y.reduce((first,el)=>{return first + el})
+    monthFail.name = ` Thất bại: ${numMonthFail ? numMonthFail : 0} chuyến `
+    var data = [monthSuccee, monthFail];
+    var layout = {barmode: 'group'};
+    Plotly.newPlot('pieMonth', data, layout);
+    btnPieMonth.textContent = 'Xem Chi Tiết';
   }
 }
 

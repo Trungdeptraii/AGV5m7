@@ -47,7 +47,10 @@ class Controller {
       }
     }else{
       try {
-        result = await Log.find({date: {$gte: format(new Date(dateDay), 'dd-MM-yyy'), $lte: format(new Date(dateDays), 'dd-MM-yyy')}}).select(option);
+        console.log('dateDay', new Date(dateDay))
+        console.log('dateDays', new Date(dateDays))
+        result = await Log.find({createdAt
+          : {$gte: new Date(dateDay), $lte: new Date(dateDays)}}).select(option);
       } catch (error) {
         console.log('getDays Server Error', error)
       }
