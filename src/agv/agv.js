@@ -17,6 +17,10 @@ class agv {
     this.timeCirCle = 1000;
     this.checkConnect = "offline";
     this.run = false;
+    this.isStart = false;
+    this.isFail = false;
+    this.isSuccee = false;
+    this.pointGet = [10, 11, 12];
   }
   connect() {
     this.client = this.socket.connect(this.port, this.host);
@@ -72,7 +76,16 @@ class agv {
         }
         this.status = this.data['0'] == 0 ? 'STOP' : this.data['0'] == 1 ? 'START' : this.data['0'] == 2 ? 'ERROR' : undefined;
         this.rfid = this.data['1'];
-        let path = Object.values(this.data).slice(9);
+        this.call = this.data['7'];
+        this.succee = this.data['8'];
+        this.getReturns = this.data['9'] == 1 ? 'get' : this.data['9'] == 2 ? 'returns' : undefined;
+        this.cancel = this.data['10'] == 1 ? 'cancel' : undefined;
+        if(this.cancel == 'cancel' && this.run){
+          console.log('Fail')
+          this.handleFail();
+          this.run = false;
+        }
+        let path = Object.values(this.data).slice(11);
         this.path = path.filter((el)=>{
           return el != 0
         })
@@ -86,29 +99,29 @@ class agv {
     });
   }
   async handle(){
-    let data
-    if(this.path.length!= 0 && this.status == 'START' && this.run == false && this.rfid !== this.path[this.path.length-1]){
+    let data;
+    if(!this.date === format(new Date(), 'dd-MM-yyyy')){
+      createLog.create();
+    }
+    // Handle start run
+    if(this.path.length!= 0 && this.status == 'START' && !this.run && this.getReturns == 'returns' && this.pointGet.includes(this.rfid) && !this.cancel){
       this.pathAGV = this.path;
       this.run = true;
       try {
-        data = await createLog.find();
+        // Tìm ngày hiện tại
+        data = await createLog.find(); 
+        // Tạo log trong ngày
         const itemLog = createLog.itemlog({timeStart: format(new Date(), 'HH:mm:ss'), path: this.pathAGV})
         data[0].arrLogTotal[data[0].arrLogTotal.length] = itemLog;
         data[0].arrLogPending[data[0].arrLogPending.length] = itemLog;
-        await createLog.update(data[0])
+        //update lại log vào dbs
+        await createLog.update(data[0]);
       } catch (error) {
         console.log('start Error', error)
       }
-      //Đoạn này bắt đầu tạo log gồm có thời gian bắt đầu, path, thời gian tổng thì chờ, trạng thái chờ
     }
-    if(this.run == true && this.status == 'START' && this.pathAGV.length != 0){
-        if(this.rfid === this.pathAGV[0]){
-          console.log(this.pathAGV)
-          this.pathAGV.shift()
-        }
-    }
-    if(this.run==true && this.pathAGV.length == 0){
-      this.run = false;
+    // Handle succee
+    if(this.run==true && this.getReturns == 'returns' && this.rfid == this.pathAGV[this.pathAGV.length-1]){
       try {
         const data = await createLog.find();
         const succee = data[0].arrLogPending.pop();
@@ -124,9 +137,28 @@ class agv {
       } catch (error) {
         console.log('erorr', error)
       }
+      this.run = false;
     }
-    
+  
   }
+  async handleFail(){
+    try {
+      // Lấy thông tin log ngày hiện tại
+      const data = await createLog.find();
+      // Lấy ra phần từ log đang pending
+      const fail = data[0].arrLogPending.pop();
+      // Xóa phần tử pending trong log Total
+      data[0].arrLogTotal.pop();
+      fail.timeEnd = `${format(new Date(), 'HH:mm:ss')}`;
+      fail.status = 'Thất bại';
+      fail.totalTime = createLog.time(fail.timeEnd, fail.timeStart)
+      data[0].arrLogFail[data[0].arrLogFail.length] = fail;
+      data[0].arrLogTotal[data[0].arrLogTotal.length] = fail;
+      await createLog.update(data[0])
+    } catch (error) {
+      console.log('Fn Handle Fail Error', error)
+    }
+  }s
 }
 
 let agvv = new agv(portClient, ipClient);

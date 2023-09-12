@@ -29,7 +29,6 @@ class Controller {
     } catch (error) {
       console.log('router getDashbroad Error')
     }
-    
   }
   static async getDay(req, res){
     let {dateDay, dateDays} = req.body;
@@ -39,7 +38,6 @@ class Controller {
       date: 1, arrLogTotal: 1, arrLogFail: 1, arrLogSuccee: 1, arrLogPending: 1, _id: 0
     }
     if(!get){
-      
       try {
         result = await Log.findOne({date: format(new Date(dateDay), 'dd-MM-yyy')});
       } catch (error) {
@@ -47,8 +45,6 @@ class Controller {
       }
     }else{
       try {
-        console.log('dateDay', new Date(dateDay))
-        console.log('dateDays', new Date(dateDays))
         result = await Log.find({createdAt
           : {$gte: new Date(dateDay), $lte: new Date(dateDays)}}).select(option);
       } catch (error) {

@@ -34,7 +34,7 @@ const update =  async(data)=>{
         upsert: true, // chưa có thì sẽ insert, có rồi thì sẽ update
       };
     try {
-        await Log.findOneAndUpdate(filter, data)
+        await Log.findOneAndUpdate(filter, data, options)
     } catch (error) {
         console.log('[Update ERROR]: ', error)
     }
@@ -44,16 +44,26 @@ const time =  (start, end)=>{
     let timeStart = end.split(':');
     let [minute, second] =  [timeEnd[1]-timeStart[1], timeEnd[2]-timeStart[2]];
     if(timeEnd[1]>=timeStart[1] && timeEnd[2]<timeStart[2]){
-        return `${minute*60 + timeEnd[2] - timeStart[2]}`
+        return `0:${minute*60 + +timeEnd[2] - +timeStart[2]}`
     }else{
         return `${minute}:${second}`
     }
+}
+const create = async ()=>{
+    try {
+        const result = await Log.find({date: `${format(new Date(), 'dd-MM-yyyy') }`})
+        if(result.length == 0){
+          await Log.create({date: `${format(new Date(), 'dd-MM-yyyy') }`});
+          console.log(`Create log ${format(new Date(), 'dd-MM-yyyy')}` )
+        }
+      } catch (error) {
+        console.log(error)
+      }
 }
 module.exports = {
     itemlog,
     find,
     update,
-    time
+    time,
+    create
 }
-'10: 30'
-'11:40'
