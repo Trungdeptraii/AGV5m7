@@ -38,12 +38,13 @@ async function Fetch(method, path, raw = null) {
       requestOptions
     );
     const {data} = await result.json();
-    console.log('data', data)
+    let {date, arrLogTotal, arrLogSuccee, arrLogFail, arrLogPending} = data;
+    console.log('data', arrLogTotal)
     if(data.length != 0){
       title.textContent = `Dữ liệu ngày: ${format(new Date(), 'dd-MM-yyyy')}`;
-      numTotal = data[0].arrLogTotal.length;
-      numSuccee = data[0].arrLogSuccee.length;
-      pending = data[0].arrLogPending.length;
+      numTotal = arrLogTotal.length;
+      numSuccee = arrLogSuccee.length;
+      pending = arrLogPending.length;
       numFail = numTotal - numSuccee - pending;
       console.log( 'numTotal', numTotal, 'numSuccee', numSuccee, 'numFail', numFail)
       if(numTotal != 0){
@@ -74,7 +75,7 @@ async function Fetch(method, path, raw = null) {
             </div>
           `)
           }
-          data[0].arrLogTotal.forEach((el)=>{
+          arrLogTotal.forEach((el)=>{
             createElement(el, listChild);
           })
         }else{
@@ -102,7 +103,7 @@ async function Fetch(method, path, raw = null) {
             </div>
           `)
           }
-          data[0].arrLogTotal.forEach((el)=>{
+          arrLogTotal.forEach((el)=>{
             createElement(el, listChild);
           })
         }

@@ -23,7 +23,7 @@ const itemlog = ({timeStart=undefined, timeEnd=undefined, totalTime='chờ', pat
 const find = async()=>{
     try {
         const result = await Log.find(filter).select(selectz);
-        return result;
+        return result[0];
     } catch (error) {
         console.log('[FindOne ERROR]: ', error)
     }

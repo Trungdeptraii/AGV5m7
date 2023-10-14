@@ -1,11 +1,8 @@
 require("dotenv").config({ path: `${__dirname}/../../.env` });
 const web3 = require("web3-utils");
 const net = require("node:net");
-const Log = require(`${__dirname}/../models/log.model.js`);
 const createLog = require(`${__dirname}/../utils/utils.js`);
 const {format} = require('date-fns');
-const { da } = require("date-fns/locale");
-const { assert } = require("node:console");
 
 const portClient = process.env.PORTCLIENT;
 const ipClient = process.env.HOSTCLIENT;
@@ -62,9 +59,8 @@ class agv {
       clearInterval(this.timeClear);
       this.connect();
     });
-    this.client.on("ready", async() => {
+    this.client.on("ready", () => {
       this.checkConnect = "online";
-      await this.reconnect()
     });
     this.client.on("connect", () => {
       console.log(`Connected ip: ${this.host} port ${this.port} succee.`);
@@ -83,6 +79,11 @@ class agv {
         this.succee = this.data['8'];
         this.getReturns = this.data['9'] == 1 ? 'get' : this.data['9'] == 2 ? 'returns' : undefined;
         this.cancel = this.data['10'] == 1 ? 'cancel' : undefined;
+        if(this.cancel == 'cancel' && this.run){
+          console.log('Fail')
+          this.handleFail();
+          this.run = false;
+        }
         let path = Object.values(this.data).slice(11);
         this.path = path.filter((el)=>{
           return el != 0
@@ -102,28 +103,18 @@ class agv {
       createLog.create();
     }
     // Handle start run
-    if(this.path.length!= 0 && this.status == 'START' && !this.run && this.getReturns == 'returns' && this.pointGet.includes(this.rfid)){
+    if(this.path.length!= 0 && this.status == 'START' && !this.run && this.getReturns == 'returns' && this.pointGet.includes(this.rfid) && !this.cancel){
       this.pathAGV = this.path;
       this.run = true;
       try {
         // Tìm ngày hiện tại
         data = await createLog.find(); 
-        let {date, arrLogTotal, arrLogSuccee, arrLogFail, arrLogPending} = data;
-        if(arrLogPending.length === 0){
-          console.log('Không có data chờ, tạo data mới');
-          // Tạo log trong ngày
-          const itemLog = createLog.itemlog({timeStart: format(new Date(), 'HH:mm:ss'), path: this.pathAGV})
-          arrLogTotal[arrLogTotal.length] = itemLog;
-          arrLogPending[arrLogPending.length] = itemLog;
-          await createLog.update(data);
-        }else if(arrLogPending.length != 0){
-          console.log('Đang có dữ liệu chưa xử lý');
-          if(this.getReturns === 'returns'){
-            console.log('Tiếp tục dữ liệu cũ');
-          }else{
-            console.log('Dữ liệu cũ thất bại')
-          }
-        }
+        // Tạo log trong ngày
+        const itemLog = createLog.itemlog({timeStart: format(new Date(), 'HH:mm:ss'), path: this.pathAGV})
+        data[0].arrLogTotal[data[0].arrLogTotal.length] = itemLog;
+        data[0].arrLogPending[data[0].arrLogPending.length] = itemLog;
+        //update lại log vào dbs
+        await createLog.update(data[0]);
       } catch (error) {
         console.log('start Error', error)
       }
@@ -132,17 +123,16 @@ class agv {
     if(this.run==true && this.getReturns == 'returns' && this.rfid == this.pathAGV[this.pathAGV.length-1]){
       try {
         const data = await createLog.find();
-        let {date, arrLogTotal, arrLogSuccee, arrLogFail, arrLogPending} = data;
-        const succee = arrLogPending.pop();
-        arrLogTotal.pop();
+        const succee = data[0].arrLogPending.pop();
+        data[0].arrLogTotal.pop();
         succee.timeEnd = `${format(new Date(), 'HH:mm:ss')}`;
         succee.status = 'Thành công';
         console.log('timeEnd', succee.timeEnd)
         console.log('timeStart', succee.timeStart)
         succee.totalTime = createLog.time(succee.timeEnd, succee.timeStart)
-        arrLogSuccee[arrLogSuccee.length] = succee;
-        arrLogTotal[arrLogTotal.length] = succee;
-        await createLog.update(data)
+        data[0].arrLogSuccee[data[0].arrLogSuccee.length] = succee;
+        data[0].arrLogTotal[data[0].arrLogTotal.length] = succee;
+        await createLog.update(data[0])
       } catch (error) {
         console.log('erorr', error)
       }
@@ -154,40 +144,20 @@ class agv {
     try {
       // Lấy thông tin log ngày hiện tại
       const data = await createLog.find();
-      let {date, arrLogTotal, arrLogSuccee, arrLogFail, arrLogPending} = data;
       // Lấy ra phần từ log đang pending
-      const fail = arrLogPending.pop();
-      console.log('fail', fail)
+      const fail = data[0].arrLogPending.pop();
       // Xóa phần tử pending trong log Total
-      arrLogTotal.pop();
+      data[0].arrLogTotal.pop();
       fail.timeEnd = `${format(new Date(), 'HH:mm:ss')}`;
       fail.status = 'Thất bại';
       fail.totalTime = createLog.time(fail.timeEnd, fail.timeStart)
-      arrLogFail[arrLogFail.length] = fail;
-      arrLogTotal[arrLogTotal.length] = fail;
-      await createLog.update(data)
+      data[0].arrLogFail[data[0].arrLogFail.length] = fail;
+      data[0].arrLogTotal[data[0].arrLogTotal.length] = fail;
+      await createLog.update(data[0])
     } catch (error) {
       console.log('Fn Handle Fail Error', error)
     }
-  }
-  async reconnect(){
-    try {
-      // Tìm ngày hiện tại
-      let data = await createLog.find(); 
-      let {date, arrLogTotal, arrLogSuccee, arrLogFail, arrLogPending} = data;
-      if(arrLogPending.length != 0){
-        console.log('Đang có dữ liệu chưa xử lý', this.getReturns);
-        if(this.getReturns === 'returns'){
-          console.log('Tiếp tục dữ liệu cũ');
-        }else{
-          console.log('Dữ liệu cũ bị fail');
-          await this.handleFail()
-        }
-      }
-    } catch (error) {
-      console.log('start Error', error)
-    }
-  }
+  }s
 }
 
 let agvv = new agv(portClient, ipClient);
